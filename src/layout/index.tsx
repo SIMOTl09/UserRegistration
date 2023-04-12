@@ -19,11 +19,7 @@ const View: React.FC = () => {
       <Layout className="site-layout">
         {/* 右边头部 */}
         <Header className="site-layout-background" style={{ paddingLeft: '16px' }} >
-          {/* 面包屑 */}
-          <Breadcrumb style={{ lineHeight:'64px' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
+          头部
         </Header>
         {/* 右边内容部分-白色底盒子 */}
         <Content style={{ margin: '16px 16px 0' }} className="site-layout-background">

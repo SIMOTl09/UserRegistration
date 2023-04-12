@@ -1,9 +1,5 @@
 import {
-  DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
 import type { MenuProps } from 'antd';
