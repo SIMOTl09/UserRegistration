@@ -1,4 +1,12 @@
 
+function forEach(array, iteratee) {
+    let index = -1;
+    const length = array.length;
+    while (++index < length) {
+        iteratee(array[index], index);
+    }
+    return array;
+}
 
 export const deepClone = (target, map = new WeakMap())=> {
     if (typeof target === 'object') {

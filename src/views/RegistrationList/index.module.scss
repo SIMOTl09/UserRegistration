@@ -1,0 +1,23 @@
+
+
+.home {
+    padding: 20px;
+}
+.searchbar {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .form {
+        flex: 1;
+        
+    }
+
+    .button_wrapper{
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

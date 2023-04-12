@@ -1,5 +1,6 @@
 import {
   PieChartOutlined,
+  DesktopOutlined
 } from '@ant-design/icons';
 import { useState } from 'react';
 import type { MenuProps } from 'antd';
@@ -9,9 +10,14 @@ type MenuItem = Required<MenuProps>['items'][number];
 // 登录请求到数据之后，就可以跟items这个数组进行匹配
 const items: MenuItem[] = [
   {
-    label: '注册列表',
+    label: '列表',
     key: '/page1',
     icon: <PieChartOutlined />
+  },
+  {
+    label: '注册',
+    key: '/page2',
+    icon: <DesktopOutlined />
   },
 ]
 

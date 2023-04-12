@@ -2,8 +2,8 @@ import React,{ lazy } from "react"
 // Navigate重定向组件
 import { Navigate } from "react-router-dom"
 import Layout from  "@/layout"
-const Page1 = lazy(()=>import("../views/Page1"))
-const Page2 = lazy(()=>import("../views/Page2"))
+const Page1 = lazy(()=>import("../views/RegistrationList"))
+const Page2 = lazy(()=>import("../views/RegistrationForm"))
 
 const withLoadingComponent = (comp:JSX.Element) => (
   <React.Suspense fallback={<div>Loading...</div>}>
