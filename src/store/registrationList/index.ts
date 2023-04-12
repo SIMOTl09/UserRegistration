@@ -76,19 +76,27 @@ const store={
       const id = action.val
       const arr = newState.list.filter(item => item.phone !== id)
       newState.list = arr
+    },
+    edit(newState:{ list: any[] }, action:{ type:string, val: any }){
+      const arr = newState.list.map(item => {
+        if (item.phone === action.val.phone) {
+          return {
+            ...item,
+            ...action.val
+          }
+        }
+        return item
+      })
+      newState.list = arr
     }
   },
-  actionNames:{
-    key: ''
-  }
+  actionNames:{}
 }
 
-let actionNames = {
-  key: ''
-} 
+let actionNames = {} 
 // actionNames有多少对键值对，取决于action里面有多少个函数。所以遍历store.actions，给actionNames添加键值对
 for(let key in store.actions){
-  actionNames.key = key
+  actionNames[key] = key
 }
 store.actionNames = actionNames;
 

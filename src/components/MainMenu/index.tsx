@@ -13,12 +13,7 @@ const items: MenuItem[] = [
     label: '列表',
     key: '/page1',
     icon: <PieChartOutlined />
-  },
-  {
-    label: '注册',
-    key: '/page2',
-    icon: <DesktopOutlined />
-  },
+  }
 ]
 
 const Comp: React.FC = () => {

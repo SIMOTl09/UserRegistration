@@ -10,6 +10,7 @@ import {
   Form,
   InputNumber
 } from "antd"
+import { useNavigate } from "react-router-dom"
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import { phoneNuberConvert, deepClone, dateFormat } from "@/uitls/index"
 import styles from './index.module.scss'
@@ -25,12 +26,12 @@ interface DataType {
 const View = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-
+  const navigateTo = useNavigate();
   // 通过useSelector获取仓库数据
   const { list } = useSelector((state:RootState)=>({
     list: state.listStore.list
   }))
-  const [filterList, setFilterList] = useState(deepClone(list).sort((a: { regist_time: number; }, b: { regist_time: number; }) => a.regist_time - b.regist_time))
+  const [filterList, setFilterList] = useState(deepClone(list))
 
   const onDeleteRecord = ( id: string )=> {
     dispatch({ type:"delete", val: id }) 
@@ -38,7 +39,7 @@ const View = () => {
   }
 
   useEffect(()=> {
-    setFilterList(deepClone(list))
+    setFilterList(deepClone(list).sort((a: { regist_time: number; }, b: { regist_time: number; }) => b.regist_time - a.regist_time))
   }, [list])
 
   // 搜索
@@ -54,6 +55,16 @@ const View = () => {
     setFilterList(deepClone(list))
   }
 
+  // 编辑
+  const onGoEditPage = (id: string )=> {
+    navigateTo('/page2', { state: id })
+  }
+
+  // 注册
+  const gotoRegis = ()=> {
+    navigateTo('/page2')
+  }
+
   const columns: ColumnsType<DataType> = [
     {
       title: '姓名',
@@ -63,8 +74,7 @@ const View = () => {
     {
       title: '年龄',
       dataIndex: 'age',
-      defaultSortOrder: 'descend',
-      sorter: (a: { age: number; }, b: { age: number; }) => a.age - b.age,
+      key: 'age'
     },
     {
       title: '手机号',
@@ -93,6 +103,11 @@ const View = () => {
       }
     },
     {
+      title: '备注',
+      dataIndex: 'remark',
+      key: 'remark',
+    },
+    {
       title: '操作',
       dataIndex: '',
       key: 'x',
@@ -100,7 +115,9 @@ const View = () => {
 
         return (
           <div>
-            <a>详情</a>
+            <a onClick={()=> {
+              onGoEditPage(record.phone)
+            }}>编辑</a>
             <Divider type="vertical" />
             <Popconfirm
               title="您确定要删除此条任务吗"
@@ -130,6 +147,9 @@ const View = () => {
   
   return(
     <div className={styles.home}>
+      <div className={styles.regis_wrapper} >
+        <Button type='primary' onClick={gotoRegis}>注册</Button>
+      </div>
       <div className={styles.searchbar}>
         <Form
           name="basic"
@@ -150,7 +170,7 @@ const View = () => {
         </Form>
 
         <div className={styles.button_wrapper}>
-          <Button type="primary" onClick={onSearch}>搜索</Button> 
+          <Button type="primary" onClick={onSearch} style={{marginRight: 20}}>搜索</Button> 
           <Button onClick={onReset}>重置</Button> 
         </div>
       </div>
