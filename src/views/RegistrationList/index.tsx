@@ -150,7 +150,7 @@ const View = () => {
       <div className={styles.regis_wrapper} >
         <Button type='primary' onClick={gotoRegis}>注册</Button>
       </div>
-      <div className={styles.searchbar}>
+      {/* <div className={styles.searchbar}>
         <Form
           name="basic"
           wrapperCol={{ span: 16 }}
@@ -173,7 +173,7 @@ const View = () => {
           <Button type="primary" onClick={onSearch} style={{marginRight: 20}}>搜索</Button> 
           <Button onClick={onReset}>重置</Button> 
         </div>
-      </div>
+      </div> */}
       <Table 
         dataSource={filterList} 
         columns={columns} 
