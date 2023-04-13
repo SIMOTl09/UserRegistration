@@ -22,7 +22,7 @@ const View: React.FC = () => {
           {/* 面包屑 */}
         </Header>
         {/* 右边内容部分-白色底盒子 */}
-        <Content style={{ margin: '16px 16px 0' }} className="site-layout-background">
+        <Content style={{ margin: '16px 16px 0', minWidth: '800px' }} className="site-layout-background">
             {/* 窗口部分 */}
             <Outlet />
         </Content>
