@@ -11,7 +11,7 @@ const View: React.FC = () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       {/* 左边侧边栏 */}
-      <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+      <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)} trigger={null}>
         <div className="logo"></div>
         <MainMenu></MainMenu>
       </Sider>

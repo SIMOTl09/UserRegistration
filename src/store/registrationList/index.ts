@@ -6,24 +6,32 @@ const store={
       {
         name: '周深',
         age: 32,
+        sex: '男',
+        password: 'tl565767$$$',
         address: '北京市朝阳区',
         phone: '18757562024',
-        regist_time: 1681309658336
+        regist_time: 1681309658336,
+        remark: '',
       },
       {
         name: '胡歌',
+        sex: '男',
+        password: 'tl565767$$$',
         age: 42,
         address: '杭州市西湖区',
         phone: '18750564424',
-        regist_time: 1681309688169
+        regist_time: 1681309688169,
+        remark: '',
       },
       {
-       
-        name: '言承旭',
+        name: '彭蕾',
+        password: 'tl565767$$$',
         age: 22,
+        sex: '女',
         address: '上海市',
         phone: '18757564545',
-        regist_time: 1681309712184
+        regist_time: 1681309712184,
+        remark: '',
       }
     ]
   },
@@ -32,7 +40,6 @@ const store={
   actions:{  
     newAdd(newState:{ list: any[] }, action:{ type:string, val: any }){
       const value = action.val
-      console.log(value, '--val--')
       newState.list.push(value)
     },
     delete(newState:{ list: any[] }, action:{ type:string, val: string }){

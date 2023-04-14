@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 import { 
   message, 
   Table, 
@@ -9,24 +9,37 @@ import {
   Popconfirm, 
   Form,
   InputNumber
-} from "antd"
-import { useNavigate } from "react-router-dom"
+} from "antd";
+import Search from "@/components/SearchForm";
+import FormModal from "@/components/FormModal";
+import { useNavigate } from "react-router-dom";
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { phoneNuberConvert, deepClone, dateFormat } from "@/uitls/index"
+import { phoneNuberConvert, deepClone, dateFormat } from "@/uitls/index";
+
 import styles from './index.module.scss'
 
 interface DataType {
   key: React.Key;
+  sex: string;
   name: string;
   age: number;
   address: string;
+  phone: string;
+  remark: string
+}
+
+interface SearchType {
+  name: string;
   phone: string
 }
 
 const View = () => {
-  const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const [visible, setVisiable] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [recordId, setRecordId] = useState('');
   const navigateTo = useNavigate();
+
   // 通过useSelector获取仓库数据
   const { list } = useSelector((state:RootState)=>({
     list: state.listStore.list
@@ -43,26 +56,49 @@ const View = () => {
   }, [list])
 
   // 搜索
-  const onSearch = ()=> {
-    const values = form.getFieldsValue()
-    const arr = list.filter((item: any) => item.age === values.age)
-    setFilterList(arr)
+  const onSearch = (values: SearchType)=> {
+    const { name, phone } = values;
+    if (!name && !phone) return;
+    let filterData = filterList;
+    for (let key in values) {
+      if (values[key]) {
+        filterData = filterData.filter((item: any) =>
+          (item[key]).includes(values[key])
+        );
+      }
+    }
+    setFilterList(filterData)
+  }
+
+  const onCancel = ()=> {
+    setVisiable(false)
+    setIsEdit(false)
+  }
+
+  const onShow = ()=> {
+    setVisiable(true)
   }
 
   // 搜索
   const onReset = ()=> {
-    form.resetFields()
-    setFilterList(deepClone(list))
+    setFilterList(deepClone(list).sort((a: { regist_time: number; }, b: { regist_time: number; }) => b.regist_time - a.regist_time))
   }
 
   // 编辑
   const onGoEditPage = (id: string )=> {
+    setIsEdit(true)
+    setRecordId(id)
+    onShow()
+  }
+
+  // 编辑
+  const onGoDetailPage = (id: string )=> {
     navigateTo('/page2', { state: id })
   }
 
   // 注册
   const gotoRegis = ()=> {
-    navigateTo('/page2')
+    onShow()
   }
 
   const columns: ColumnsType<DataType> = [
@@ -72,9 +108,15 @@ const View = () => {
       key: 'name',
     },
     {
+      title: '性别',
+      dataIndex: 'sex',
+      key: 'sex',
+    },
+    {
       title: '年龄',
       dataIndex: 'age',
-      key: 'age'
+      key: 'age',
+      sorter: (a, b) => a.age - b.age
     },
     {
       title: '手机号',
@@ -88,11 +130,6 @@ const View = () => {
       }
     },
     {
-      title: '住址',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
       title: '注册时间',
       dataIndex: 'regist_time',
       key: 'regist_time',
@@ -103,11 +140,6 @@ const View = () => {
       }
     },
     {
-      title: '备注',
-      dataIndex: 'remark',
-      key: 'remark',
-    },
-    {
       title: '操作',
       dataIndex: '',
       key: 'x',
@@ -115,6 +147,10 @@ const View = () => {
 
         return (
           <div>
+            <a onClick={()=> {
+              onGoDetailPage(record.phone)
+            }}>详细信息</a>
+            <Divider type="vertical" />
             <a onClick={()=> {
               onGoEditPage(record.phone)
             }}>编辑</a>
@@ -147,33 +183,8 @@ const View = () => {
   
   return(
     <div className={styles.home}>
-      <div className={styles.regis_wrapper} >
-        <Button type='primary' onClick={gotoRegis}>注册</Button>
-      </div>
-      {/* <div className={styles.searchbar}>
-        <Form
-          name="basic"
-          wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
-          autoComplete="off"
-          labelAlign='left'
-          form={form}
-          className={styles.form}
-        >
-          <Form.Item
-            label="年龄"
-            name="age"
-            style={{marginBottom: 0}}
-          >
-            <InputNumber  style={{width: 200}} max={100} min={1} />
-          </Form.Item>
-        </Form>
-
-        <div className={styles.button_wrapper}>
-          <Button type="primary" onClick={onSearch} style={{marginRight: 20}}>搜索</Button> 
-          <Button onClick={onReset}>重置</Button> 
-        </div>
-      </div> */}
+      <Search onReset={onReset} onSearch={onSearch}/>
+      <div className={styles.table_title}><Button type='primary' onClick={gotoRegis}>注册</Button></div>
       <Table 
         dataSource={filterList} 
         columns={columns} 
@@ -181,6 +192,7 @@ const View = () => {
         pagination={pagination} 
         rowKey={(record)=> record.phone}
       />
+      <FormModal visible={visible} cancel={onCancel} isEdit={isEdit} id={recordId} />
     </div>
   )
 }
