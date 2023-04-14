@@ -49,26 +49,27 @@ const Comp = (props: PropsType) => {
   
   // 提交
   const onFinish = debounce(() => {
-    const values = form.getFieldsValue();
-    if(isEdit) {
-      dispatch({ type:"edit", val: values }) 
-      message.success('编辑成功');
-      navigateTo('/page1')
-    } else {
-      if(list.find((item: DataType) => item.phone === values.phone) ) {
-        message.error('您的手机号已经被注册')
-      } else {
-        const time = new Date().getTime()
-        const params = {
-          ...values,
-          regist_time: time
-        }
-        dispatch({ type:"newAdd", val: params }) 
-        message.success('注册成功');
+    form.validateFields().then(values => {
+      if(isEdit) {
+        dispatch({ type:"edit", val: values }) 
+        message.success('编辑成功');
         navigateTo('/page1')
+      } else {
+        if(list.find((item: DataType) => item.phone === values.phone) ) {
+          message.error('您的手机号已经被注册')
+        } else {
+          const time = new Date().getTime()
+          const params = {
+            ...values,
+            regist_time: time
+          }
+          dispatch({ type:"newAdd", val: params }) 
+          message.success('注册成功');
+          navigateTo('/page1')
+        }
       }
-    }
-    cancel()
+      cancel()
+    });
   }, 500);
 
   useEffect(()=> {
